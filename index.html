@@ -1,15 +1,154 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Tchan-Zâca 360</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
-<script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
-<style>
-html,body,#panorama{width:100%;height:100%;margin:0;background:#000;overflow:hidden}#nav{position:fixed;z-index:10;left:50%;bottom:22px;transform:translateX(-50%);display:flex;gap:10px}button{border:1px solid #fff;background:rgba(0,0,0,.55);color:#fff;padding:10px 15px;border-radius:5px;cursor:pointer;font-size:15px}
-</style>
-</head><body>
-<div id="panorama"></div><div id="nav"><button onclick="viewer.loadScene('image01')">01</button><button onclick="viewer.loadScene('image02')">02</button><button onclick="viewer.loadScene('image03')">03</button></div>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tchan-Zâca 360</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
+  <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+
+  <!-- Préchargement des 3 panoramas pour rendre les changements quasi immédiats -->
+  <link rel="preload" as="image" href="01.png">
+  <link rel="preload" as="image" href="02.png">
+  <link rel="preload" as="image" href="03.png">
+
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+      font-family: Arial, sans-serif;
+    }
+
+    #panorama {
+      width: 100%;
+      height: 100%;
+      background: #000;
+    }
+
+    #navigation {
+      position: fixed;
+      z-index: 20;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+    }
+
+    button {
+      border: 1px solid rgba(255,255,255,.8);
+      background: rgba(0,0,0,.58);
+      color: white;
+      width: 42px;
+      height: 36px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background .15s ease;
+    }
+
+    button:hover,
+    button.active {
+      background: rgba(255,255,255,.24);
+    }
+
+    #loading {
+      position: fixed;
+      z-index: 30;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      background: rgba(0,0,0,.55);
+      padding: 9px 13px;
+      border-radius: 4px;
+      font-size: 14px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .12s ease;
+    }
+
+    #loading.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="panorama"></div>
+<div id="loading">Chargement…</div>
+
+<div id="navigation">
+  <button id="btn01" onclick="changeScene('image01', this)">01</button>
+  <button id="btn02" onclick="changeScene('image02', this)">02</button>
+  <button id="btn03" onclick="changeScene('image03', this)">03</button>
+</div>
+
 <script>
-const viewer=pannellum.viewer('panorama',{default:{firstScene:'image01',autoLoad:true,sceneFadeDuration:800},scenes:{image01:{type:'equirectangular',panorama:'01.png'},image02:{type:'equirectangular',panorama:'02.png'},image03:{type:'equirectangular',panorama:'03.png'}}});
-</script></body></html>
+const loading = document.getElementById('loading');
+
+const viewer = pannellum.viewer('panorama', {
+  default: {
+    firstScene: 'image01',
+    autoLoad: true,
+    sceneFadeDuration: 180,
+    showControls: true
+  },
+
+  scenes: {
+    image01: {
+      type: 'equirectangular',
+      panorama: '01.png'
+    },
+    image02: {
+      type: 'equirectangular',
+      panorama: '02.png'
+    },
+    image03: {
+      type: 'equirectangular',
+      panorama: '03.png'
+    }
+  }
+});
+
+function setActiveButton(sceneId) {
+  document.querySelectorAll('#navigation button').forEach(b => b.classList.remove('active'));
+  const map = {
+    image01: 'btn01',
+    image02: 'btn02',
+    image03: 'btn03'
+  };
+  document.getElementById(map[sceneId]).classList.add('active');
+}
+
+function changeScene(sceneId, button) {
+  if (viewer.getScene() === sceneId) return;
+  loading.classList.add('show');
+  viewer.loadScene(sceneId);
+  setActiveButton(sceneId);
+}
+
+viewer.on('load', function() {
+  loading.classList.remove('show');
+  const current = viewer.getScene();
+  if (current) setActiveButton(current);
+});
+
+/* Warm-up du cache navigateur.
+   Les images 02 et 03 commencent à se charger dès que la première vue est affichée. */
+window.addEventListener('load', () => {
+  ['02.png', '03.png'].forEach(src => {
+    const img = new Image();
+    img.decoding = 'async';
+    img.src = src;
+  });
+});
+</script>
+
+</body>
+</html>
