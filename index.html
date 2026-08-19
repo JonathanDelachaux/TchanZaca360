@@ -77,12 +77,31 @@
     #loading.show {
       opacity: 1;
     }
+
+    /* Gyroscope smartphone */
+    #gyroButton {
+      position: fixed;
+      z-index: 100;
+      right: 14px;
+      bottom: 14px;
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 6px;
+      padding: 10px 13px;
+      background: rgba(0,0,0,.62);
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+      display: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #gyroButton.active { background: rgba(20,120,40,.82); }
   </style>
 </head>
 
 <body>
   <div id="panorama"></div>
   <div id="loading">Chargement…</div>
+  <button id="gyroButton" type="button">Activer le gyroscope</button>
 
   <script>
     const loading = document.getElementById('loading');
@@ -99,7 +118,8 @@
         autoLoad: true,
         sceneFadeDuration: 180,
         showControls: true,
-        compass: false
+        compass: false,
+        orientationOnByDefault: false
       },
 
       scenes: {
@@ -251,6 +271,37 @@
         }
       }
     });
+
+
+    // Gyroscope / orientation smartphone
+    const gyroButton = document.getElementById('gyroButton');
+    const isTouchDevice =
+      ('ontouchstart' in window) ||
+      (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
+
+    if (isTouchDevice && window.DeviceOrientationEvent) {
+      gyroButton.style.display = 'block';
+    }
+
+    async function activateGyroscope() {
+      try {
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+          const permission = await DeviceOrientationEvent.requestPermission();
+          if (permission !== 'granted') {
+            gyroButton.textContent = 'Gyroscope refusé';
+            return;
+          }
+        }
+        viewer.startOrientation();
+        gyroButton.textContent = 'Gyroscope activé';
+        gyroButton.classList.add('active');
+      } catch (err) {
+        console.error('Erreur gyroscope :', err);
+        gyroButton.textContent = 'Gyroscope indisponible';
+      }
+    }
+
+    gyroButton.addEventListener('click', activateGyroscope);
 
     /*
       Précharge uniquement les panoramas reliés à la scène courante.
