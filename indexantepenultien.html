@@ -24,58 +24,37 @@
       background: #000;
     }
 
-    /* Navigation type Google Street View / Earth */
+    /* Points de navigation */
     .nav-hotspot {
-      width: 44px;
-      height: 44px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       box-sizing: border-box;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
       cursor: pointer;
       border: 2px solid rgba(255,255,255,.95);
-      box-shadow: 0 3px 12px rgba(0,0,0,.50);
+      box-shadow: 0 2px 8px rgba(0,0,0,.45);
+      transition: transform .14s ease, filter .14s ease;
       user-select: none;
-      transform-origin: center;
-      transition: transform .14s ease, filter .14s ease, opacity .14s ease;
-      opacity: .92;
     }
 
     .nav-hotspot:hover {
-      transform: scale(1.13);
+      transform: scale(1.18);
       filter: brightness(1.12);
-      opacity: 1;
     }
 
     .nav-hotspot.next {
-      background: rgba(220,30,30,.88);
+      background: #e32020;
     }
 
     .nav-hotspot.prev {
-      background: rgba(35,190,55,.88);
-    }
-
-    .nav-hotspot::before {
-      content: "";
-      width: 14px;
-      height: 14px;
-      border-top: 4px solid #fff;
-      border-right: 4px solid #fff;
-      transform: rotate(45deg);
-      margin-left: -5px;
-    }
-
-    .nav-hotspot.prev::before {
-      transform: rotate(-135deg);
-      margin-left: 5px;
-    }
-
-    @media (max-width: 700px) {
-      .nav-hotspot {
-        width: 50px;
-        height: 50px;
-      }
+      background: #22c922;
     }
 
     /* Petit indicateur pendant un changement de panorama */
@@ -99,6 +78,7 @@
       opacity: 1;
     }
 
+    /* Gyroscope smartphone */
     #gyroButton {
       position: fixed;
       z-index: 100;
@@ -112,11 +92,9 @@
       font-size: 14px;
       cursor: pointer;
       display: none;
+      -webkit-tap-highlight-color: transparent;
     }
-
-    #gyroButton.active {
-      background: rgba(20,120,40,.82);
-    }
+    #gyroButton.active { background: rgba(20,120,40,.82); }
   </style>
 </head>
 
@@ -130,15 +108,15 @@
 
     function hotspotElement(hotSpotDiv, args) {
       hotSpotDiv.classList.add('nav-hotspot', args.kind);
+      hotSpotDiv.textContent = args.label;
       hotSpotDiv.title = (args.kind === 'prev' ? 'Retour vers ' : 'Aller vers ') + args.label;
-      hotSpotDiv.setAttribute('aria-label', hotSpotDiv.title);
     }
 
     const viewer = pannellum.viewer('panorama', {
       default: {
         firstScene: '01',
         autoLoad: true,
-        sceneFadeDuration: 420,
+        sceneFadeDuration: 180,
         showControls: true,
         compass: false,
         orientationOnByDefault: false
@@ -153,11 +131,9 @@
           hfov: 100,
           hotSpots: [
             { pitch: -13.21, yaw: 17.51, type: 'scene', sceneId: '09',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
               cssClass: 'prev', createTooltipFunc: hotspotElement,
               createTooltipArgs: {kind:'prev', label:'09'} },
             { pitch: 0.20, yaw: 178.80, type: 'scene', sceneId: '02',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
               cssClass: 'next', createTooltipFunc: hotspotElement,
               createTooltipArgs: {kind:'next', label:'02'} }
           ]
@@ -171,11 +147,9 @@
           hfov: 100,
           hotSpots: [
             { pitch: 1.76, yaw: 4.31, type: 'scene', sceneId: '01',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
               cssClass: 'prev', createTooltipFunc: hotspotElement,
               createTooltipArgs: {kind:'prev', label:'01'} },
             { pitch: -2.44, yaw: 176.45, type: 'scene', sceneId: '03',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
               cssClass: 'next', createTooltipFunc: hotspotElement,
               createTooltipArgs: {kind:'next', label:'03'} }
           ]
@@ -189,11 +163,9 @@
           hfov: 100,
           hotSpots: [
             { pitch: -5.31, yaw: 5.06, type: 'scene', sceneId: '02',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
               cssClass: 'prev', createTooltipFunc: hotspotElement,
               createTooltipArgs: {kind:'prev', label:'02'} },
             { pitch: -9.45, yaw: 177.54, type: 'scene', sceneId: '04',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
               cssClass: 'next', createTooltipFunc: hotspotElement,
               createTooltipArgs: {kind:'next', label:'04'} }
           ]
@@ -207,11 +179,9 @@
           hfov: 100,
           hotSpots: [
             { pitch: -12.24, yaw: 5.79, type: 'scene', sceneId: '03',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
               cssClass: 'prev', createTooltipFunc: hotspotElement,
               createTooltipArgs: {kind:'prev', label:'03'} },
             { pitch: -25.88, yaw: 170.91, type: 'scene', sceneId: '05',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
               cssClass: 'next', createTooltipFunc: hotspotElement,
               createTooltipArgs: {kind:'next', label:'05'} }
           ]
@@ -225,15 +195,12 @@
           hfov: 100,
           hotSpots: [
             { pitch: -6.48, yaw: 1.84, type: 'scene', sceneId: '04',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
               cssClass: 'prev', createTooltipFunc: hotspotElement,
               createTooltipArgs: {kind:'prev', label:'04'} },
             { pitch: -2.15, yaw: 90.45, type: 'scene', sceneId: '07',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
               cssClass: 'next', createTooltipFunc: hotspotElement,
               createTooltipArgs: {kind:'next', label:'07'} },
             { pitch: -1.75, yaw: 105.81, type: 'scene', sceneId: '08',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
               cssClass: 'next', createTooltipFunc: hotspotElement,
               createTooltipArgs: {kind:'next', label:'08'} }
           ]
@@ -247,15 +214,12 @@
           hfov: 100,
           hotSpots: [
             { pitch: -5.34, yaw: -47.78, type: 'scene', sceneId: '05',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
               cssClass: 'prev', createTooltipFunc: hotspotElement,
               createTooltipArgs: {kind:'prev', label:'05'} },
             { pitch: -3.08, yaw: 65.79, type: 'scene', sceneId: '07',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
               cssClass: 'next', createTooltipFunc: hotspotElement,
               createTooltipArgs: {kind:'next', label:'07'} },
             { pitch: -2.42, yaw: 98.69, type: 'scene', sceneId: '08',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
               cssClass: 'next', createTooltipFunc: hotspotElement,
               createTooltipArgs: {kind:'next', label:'08'} }
           ]
@@ -269,7 +233,6 @@
           hfov: 100,
           hotSpots: [
             { pitch: -2.41, yaw: -86.94, type: 'scene', sceneId: '05',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
               cssClass: 'prev', createTooltipFunc: hotspotElement,
               createTooltipArgs: {kind:'prev', label:'05'} }
           ]
@@ -283,11 +246,9 @@
           hfov: 100,
           hotSpots: [
             { pitch: -3.90, yaw: -79.50, type: 'scene', sceneId: '06',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
               cssClass: 'prev', createTooltipFunc: hotspotElement,
               createTooltipArgs: {kind:'prev', label:'06'} },
             { pitch: -2.68, yaw: 177.24, type: 'scene', sceneId: '09',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
               cssClass: 'next', createTooltipFunc: hotspotElement,
               createTooltipArgs: {kind:'next', label:'09'} }
           ]
@@ -301,11 +262,9 @@
           hfov: 100,
           hotSpots: [
             { pitch: -6.26, yaw: 1.88, type: 'scene', sceneId: '08',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
               cssClass: 'prev', createTooltipFunc: hotspotElement,
               createTooltipArgs: {kind:'prev', label:'08'} },
             { pitch: -8.74, yaw: 168.57, type: 'scene', sceneId: '01',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
               cssClass: 'next', createTooltipFunc: hotspotElement,
               createTooltipArgs: {kind:'next', label:'01'} }
           ]
@@ -314,7 +273,7 @@
     });
 
 
-    // Gyroscope smartphone
+    // Gyroscope / orientation smartphone
     const gyroButton = document.getElementById('gyroButton');
     const isTouchDevice =
       ('ontouchstart' in window) ||
@@ -333,12 +292,6 @@
             return;
           }
         }
-
-        if (viewer.isOrientationSupported && !viewer.isOrientationSupported()) {
-          gyroButton.textContent = 'Gyroscope indisponible';
-          return;
-        }
-
         viewer.startOrientation();
         gyroButton.textContent = 'Gyroscope activé';
         gyroButton.classList.add('active');
@@ -388,16 +341,8 @@
       (neighbours[current] || []).forEach(preloadScene);
     });
 
-    // Préchargement prioritaire des voisins de la première scène.
+    // Préchargement des voisins de la première scène dès l'ouverture.
     ['09','02'].forEach(preloadScene);
-
-    // Puis préchargement progressif de tout le parcours.
-    window.addEventListener('load', () => {
-      const allScenes = ['01','02','03','04','05','06','07','08','09'];
-      allScenes.forEach((id, i) => {
-        setTimeout(() => preloadScene(id), 500 + i * 350);
-      });
-    });
   </script>
 </body>
 </html>
