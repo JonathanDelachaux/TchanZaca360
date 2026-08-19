@@ -24,58 +24,28 @@
       background: #000;
     }
 
-    /* Navigation type Google Street View / Earth */
+    /* Navigation au sol inspirée de Street View */
     .nav-hotspot {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-sizing: border-box;
-      cursor: pointer;
-      border: 2px solid rgba(255,255,255,.95);
-      box-shadow: 0 3px 12px rgba(0,0,0,.50);
-      user-select: none;
-      transform-origin: center;
-      transition: transform .14s ease, filter .14s ease, opacity .14s ease;
-      opacity: .92;
+      width: 66px; height: 46px; display:flex; align-items:center; justify-content:center;
+      cursor:pointer; user-select:none; transform-origin:50% 70%;
+      transition:transform .12s ease, opacity .12s ease; opacity:.92;
+      filter:drop-shadow(0 3px 4px rgba(0,0,0,.45));
     }
-
-    .nav-hotspot:hover {
-      transform: scale(1.13);
-      filter: brightness(1.12);
-      opacity: 1;
-    }
-
-    .nav-hotspot.next {
-      background: rgba(220,30,30,.88);
-    }
-
-    .nav-hotspot.prev {
-      background: rgba(35,190,55,.88);
-    }
-
+    .nav-hotspot:hover { transform:scale(1.12); opacity:1; }
     .nav-hotspot::before {
-      content: "";
-      width: 14px;
-      height: 14px;
-      border-top: 4px solid #fff;
-      border-right: 4px solid #fff;
-      transform: rotate(45deg);
-      margin-left: -5px;
+      content:""; position:absolute; width:58px; height:28px; border-radius:50%;
+      background:rgba(255,255,255,.24); border:2px solid rgba(255,255,255,.92);
+      transform:perspective(90px) rotateX(58deg);
     }
-
-    .nav-hotspot.prev::before {
-      transform: rotate(-135deg);
-      margin-left: 5px;
+    .nav-hotspot::after {
+      content:"⌃"; position:absolute; color:#fff; font-size:42px; font-weight:700;
+      line-height:1; text-shadow:0 2px 4px rgba(0,0,0,.55); transform:translateY(-3px);
     }
-
-    @media (max-width: 700px) {
-      .nav-hotspot {
-        width: 50px;
-        height: 50px;
-      }
+    .nav-hotspot.prev::after { content:"⌄"; transform:translateY(2px); }
+    @media (max-width:700px) {
+      .nav-hotspot { width:76px; height:54px; }
+      .nav-hotspot::before { width:68px; height:32px; }
+      .nav-hotspot::after { font-size:48px; }
     }
 
     /* Petit indicateur pendant un changement de panorama */
@@ -95,42 +65,28 @@
       transition: opacity .12s ease;
     }
 
-    #loading.show {
-      opacity: 1;
-    }
-
+    #loading.show { opacity: 1; }
     #gyroButton {
-      position: fixed;
-      z-index: 100;
-      right: 14px;
-      bottom: 14px;
-      border: 1px solid rgba(255,255,255,.9);
-      border-radius: 6px;
-      padding: 10px 13px;
-      background: rgba(0,0,0,.62);
-      color: #fff;
-      font-size: 14px;
-      cursor: pointer;
-      display: none;
+      position:fixed; z-index:100; right:14px; bottom:14px;
+      border:1px solid rgba(255,255,255,.88); border-radius:999px;
+      padding:9px 13px; background:rgba(0,0,0,.55); color:#fff;
+      font-size:13px; cursor:pointer; display:none;
     }
-
-    #gyroButton.active {
-      background: rgba(20,120,40,.82);
-    }
+    #gyroButton.active { background:rgba(35,120,65,.78); }
   </style>
 </head>
 
 <body>
   <div id="panorama"></div>
   <div id="loading">Chargement…</div>
-  <button id="gyroButton" type="button">Activer le gyroscope</button>
+  <button id="gyroButton" type="button">Gyroscope</button>
 
   <script>
     const loading = document.getElementById('loading');
 
     function hotspotElement(hotSpotDiv, args) {
       hotSpotDiv.classList.add('nav-hotspot', args.kind);
-      hotSpotDiv.title = (args.kind === 'prev' ? 'Retour vers ' : 'Aller vers ') + args.label;
+      hotSpotDiv.title = args.kind === 'prev' ? 'Revenir' : 'Avancer';
       hotSpotDiv.setAttribute('aria-label', hotSpotDiv.title);
     }
 
@@ -138,7 +94,7 @@
       default: {
         firstScene: '01',
         autoLoad: true,
-        sceneFadeDuration: 420,
+        sceneFadeDuration: 320,
         showControls: true,
         compass: false,
         orientationOnByDefault: false
@@ -314,15 +270,9 @@
     });
 
 
-    // Gyroscope smartphone
     const gyroButton = document.getElementById('gyroButton');
-    const isTouchDevice =
-      ('ontouchstart' in window) ||
-      (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
-
-    if (isTouchDevice && window.DeviceOrientationEvent) {
-      gyroButton.style.display = 'block';
-    }
+    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    if (isTouchDevice && window.DeviceOrientationEvent) gyroButton.style.display = 'block';
 
     async function activateGyroscope() {
       try {
@@ -333,21 +283,13 @@
             return;
           }
         }
-
-        if (viewer.isOrientationSupported && !viewer.isOrientationSupported()) {
-          gyroButton.textContent = 'Gyroscope indisponible';
-          return;
-        }
-
         viewer.startOrientation();
-        gyroButton.textContent = 'Gyroscope activé';
+        gyroButton.textContent = 'Gyroscope actif';
         gyroButton.classList.add('active');
       } catch (err) {
-        console.error('Erreur gyroscope :', err);
         gyroButton.textContent = 'Gyroscope indisponible';
       }
     }
-
     gyroButton.addEventListener('click', activateGyroscope);
 
     /*
@@ -388,14 +330,10 @@
       (neighbours[current] || []).forEach(preloadScene);
     });
 
-    // Préchargement prioritaire des voisins de la première scène.
     ['09','02'].forEach(preloadScene);
-
-    // Puis préchargement progressif de tout le parcours.
     window.addEventListener('load', () => {
-      const allScenes = ['01','02','03','04','05','06','07','08','09'];
-      allScenes.forEach((id, i) => {
-        setTimeout(() => preloadScene(id), 500 + i * 350);
+      ['01','02','03','04','05','06','07','08','09'].forEach((id, i) => {
+        setTimeout(() => preloadScene(id), 700 + i * 300);
       });
     });
   </script>
