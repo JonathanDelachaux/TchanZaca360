@@ -1,341 +1,46 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tchan-Zâca 360</title>
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
-  <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
-
-  <style>
-    html, body {
-      margin: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background: #000;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
-    #panorama {
-      width: 100%;
-      height: 100%;
-      background: #000;
-    }
-
-    /* Navigation au sol inspirée de Street View */
-    .nav-hotspot {
-      width: 66px; height: 46px; display:flex; align-items:center; justify-content:center;
-      cursor:pointer; user-select:none; transform-origin:50% 70%;
-      transition:transform .12s ease, opacity .12s ease; opacity:.92;
-      filter:drop-shadow(0 3px 4px rgba(0,0,0,.45));
-    }
-    .nav-hotspot:hover { transform:scale(1.12); opacity:1; }
-    .nav-hotspot::before {
-      content:""; position:absolute; width:58px; height:28px; border-radius:50%;
-      background:rgba(255,255,255,.24); border:2px solid rgba(255,255,255,.92);
-      transform:perspective(90px) rotateX(58deg);
-    }
-    .nav-hotspot::after {
-      content:"⌃"; position:absolute; color:#fff; font-size:42px; font-weight:700;
-      line-height:1; text-shadow:0 2px 4px rgba(0,0,0,.55); transform:translateY(-3px);
-    }
-    .nav-hotspot.prev::after { content:"⌄"; transform:translateY(2px); }
-    @media (max-width:700px) {
-      .nav-hotspot { width:76px; height:54px; }
-      .nav-hotspot::before { width:68px; height:32px; }
-      .nav-hotspot::after { font-size:48px; }
-    }
-
-    /* Petit indicateur pendant un changement de panorama */
-    #loading {
-      position: fixed;
-      z-index: 50;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      padding: 8px 12px;
-      border-radius: 4px;
-      background: rgba(0,0,0,.58);
-      color: white;
-      font-size: 13px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .12s ease;
-    }
-
-    #loading.show { opacity: 1; }
-    #gyroButton {
-      position:fixed; z-index:100; right:14px; bottom:14px;
-      border:1px solid rgba(255,255,255,.88); border-radius:999px;
-      padding:9px 13px; background:rgba(0,0,0,.55); color:#fff;
-      font-size:13px; cursor:pointer; display:none;
-    }
-    #gyroButton.active { background:rgba(35,120,65,.78); }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Tchan-Zâca Street View</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
+<script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+<style>
+html,body,#panorama{width:100%;height:100%;margin:0;overflow:hidden;background:#000}
+.street-arrow{width:90px;height:90px;cursor:pointer;filter:drop-shadow(0 3px 4px rgba(0,0,0,.75))}
+.street-arrow:before{content:"";position:absolute;left:16px;top:12px;width:58px;height:68px;background:rgba(255,255,255,.94);clip-path:polygon(50% 0,100% 48%,70% 48%,70% 100%,30% 100%,30% 48%,0 48%)}
+.street-arrow:hover:before{background:#fff}
+.street-arrow.back{transform:rotate(180deg)}
+</style>
 </head>
-
 <body>
-  <div id="panorama"></div>
-  <div id="loading">Chargement…</div>
-  <button id="gyroButton" type="button">Gyroscope</button>
-
-  <script>
-    const loading = document.getElementById('loading');
-
-    function hotspotElement(hotSpotDiv, args) {
-      hotSpotDiv.classList.add('nav-hotspot', args.kind);
-      hotSpotDiv.title = args.kind === 'prev' ? 'Revenir' : 'Avancer';
-      hotSpotDiv.setAttribute('aria-label', hotSpotDiv.title);
-    }
-
-    const viewer = pannellum.viewer('panorama', {
-      default: {
-        firstScene: '01',
-        autoLoad: true,
-        sceneFadeDuration: 320,
-        showControls: true,
-        compass: false,
-        orientationOnByDefault: false
-      },
-
-      scenes: {
-        '01': {
-          type: 'equirectangular',
-          panorama: '01.png',
-          pitch: 0,
-          yaw: 0,
-          hfov: 100,
-          hotSpots: [
-            { pitch: -13.21, yaw: 17.51, type: 'scene', sceneId: '09',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
-              cssClass: 'prev', createTooltipFunc: hotspotElement,
-              createTooltipArgs: {kind:'prev', label:'09'} },
-            { pitch: 0.20, yaw: 178.80, type: 'scene', sceneId: '02',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
-              cssClass: 'next', createTooltipFunc: hotspotElement,
-              createTooltipArgs: {kind:'next', label:'02'} }
-          ]
-        },
-
-        '02': {
-          type: 'equirectangular',
-          panorama: '02.png',
-          pitch: 0,
-          yaw: 0,
-          hfov: 100,
-          hotSpots: [
-            { pitch: 1.76, yaw: 4.31, type: 'scene', sceneId: '01',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
-              cssClass: 'prev', createTooltipFunc: hotspotElement,
-              createTooltipArgs: {kind:'prev', label:'01'} },
-            { pitch: -2.44, yaw: 176.45, type: 'scene', sceneId: '03',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
-              cssClass: 'next', createTooltipFunc: hotspotElement,
-              createTooltipArgs: {kind:'next', label:'03'} }
-          ]
-        },
-
-        '03': {
-          type: 'equirectangular',
-          panorama: '03.png',
-          pitch: 0,
-          yaw: 0,
-          hfov: 100,
-          hotSpots: [
-            { pitch: -5.31, yaw: 5.06, type: 'scene', sceneId: '02',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
-              cssClass: 'prev', createTooltipFunc: hotspotElement,
-              createTooltipArgs: {kind:'prev', label:'02'} },
-            { pitch: -9.45, yaw: 177.54, type: 'scene', sceneId: '04',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
-              cssClass: 'next', createTooltipFunc: hotspotElement,
-              createTooltipArgs: {kind:'next', label:'04'} }
-          ]
-        },
-
-        '04': {
-          type: 'equirectangular',
-          panorama: '04.png',
-          pitch: 0,
-          yaw: 0,
-          hfov: 100,
-          hotSpots: [
-            { pitch: -12.24, yaw: 5.79, type: 'scene', sceneId: '03',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
-              cssClass: 'prev', createTooltipFunc: hotspotElement,
-              createTooltipArgs: {kind:'prev', label:'03'} },
-            { pitch: -25.88, yaw: 170.91, type: 'scene', sceneId: '05',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
-              cssClass: 'next', createTooltipFunc: hotspotElement,
-              createTooltipArgs: {kind:'next', label:'05'} }
-          ]
-        },
-
-        '05': {
-          type: 'equirectangular',
-          panorama: '05.png',
-          pitch: 0,
-          yaw: 0,
-          hfov: 100,
-          hotSpots: [
-            { pitch: -6.48, yaw: 1.84, type: 'scene', sceneId: '04',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
-              cssClass: 'prev', createTooltipFunc: hotspotElement,
-              createTooltipArgs: {kind:'prev', label:'04'} },
-            { pitch: -2.15, yaw: 90.45, type: 'scene', sceneId: '07',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
-              cssClass: 'next', createTooltipFunc: hotspotElement,
-              createTooltipArgs: {kind:'next', label:'07'} },
-            { pitch: -1.75, yaw: 105.81, type: 'scene', sceneId: '08',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
-              cssClass: 'next', createTooltipFunc: hotspotElement,
-              createTooltipArgs: {kind:'next', label:'08'} }
-          ]
-        },
-
-        '06': {
-          type: 'equirectangular',
-          panorama: '06.png',
-          pitch: 0,
-          yaw: 0,
-          hfov: 100,
-          hotSpots: [
-            { pitch: -5.34, yaw: -47.78, type: 'scene', sceneId: '05',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
-              cssClass: 'prev', createTooltipFunc: hotspotElement,
-              createTooltipArgs: {kind:'prev', label:'05'} },
-            { pitch: -3.08, yaw: 65.79, type: 'scene', sceneId: '07',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
-              cssClass: 'next', createTooltipFunc: hotspotElement,
-              createTooltipArgs: {kind:'next', label:'07'} },
-            { pitch: -2.42, yaw: 98.69, type: 'scene', sceneId: '08',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
-              cssClass: 'next', createTooltipFunc: hotspotElement,
-              createTooltipArgs: {kind:'next', label:'08'} }
-          ]
-        },
-
-        '07': {
-          type: 'equirectangular',
-          panorama: '07.png',
-          pitch: 0,
-          yaw: 0,
-          hfov: 100,
-          hotSpots: [
-            { pitch: -2.41, yaw: -86.94, type: 'scene', sceneId: '05',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
-              cssClass: 'prev', createTooltipFunc: hotspotElement,
-              createTooltipArgs: {kind:'prev', label:'05'} }
-          ]
-        },
-
-        '08': {
-          type: 'equirectangular',
-          panorama: '08.png',
-          pitch: 0,
-          yaw: 0,
-          hfov: 100,
-          hotSpots: [
-            { pitch: -3.90, yaw: -79.50, type: 'scene', sceneId: '06',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
-              cssClass: 'prev', createTooltipFunc: hotspotElement,
-              createTooltipArgs: {kind:'prev', label:'06'} },
-            { pitch: -2.68, yaw: 177.24, type: 'scene', sceneId: '09',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
-              cssClass: 'next', createTooltipFunc: hotspotElement,
-              createTooltipArgs: {kind:'next', label:'09'} }
-          ]
-        },
-
-        '09': {
-          type: 'equirectangular',
-          panorama: '09.png',
-          pitch: 0,
-          yaw: 0,
-          hfov: 100,
-          hotSpots: [
-            { pitch: -6.26, yaw: 1.88, type: 'scene', sceneId: '08',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
-              cssClass: 'prev', createTooltipFunc: hotspotElement,
-              createTooltipArgs: {kind:'prev', label:'08'} },
-            { pitch: -8.74, yaw: 168.57, type: 'scene', sceneId: '01',
-              targetPitch: 'same', targetYaw: 'same', targetHfov: 'same',
-              cssClass: 'next', createTooltipFunc: hotspotElement,
-              createTooltipArgs: {kind:'next', label:'01'} }
-          ]
-        }
-      }
-    });
-
-
-    const gyroButton = document.getElementById('gyroButton');
-    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-    if (isTouchDevice && window.DeviceOrientationEvent) gyroButton.style.display = 'block';
-
-    async function activateGyroscope() {
-      try {
-        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-          const permission = await DeviceOrientationEvent.requestPermission();
-          if (permission !== 'granted') {
-            gyroButton.textContent = 'Gyroscope refusé';
-            return;
-          }
-        }
-        viewer.startOrientation();
-        gyroButton.textContent = 'Gyroscope actif';
-        gyroButton.classList.add('active');
-      } catch (err) {
-        gyroButton.textContent = 'Gyroscope indisponible';
-      }
-    }
-    gyroButton.addEventListener('click', activateGyroscope);
-
-    /*
-      Précharge uniquement les panoramas reliés à la scène courante.
-      C'est plus rapide que d'attendre au clic, sans charger les 9 images
-      d'un seul coup sur téléphone.
-    */
-    const neighbours = {
-      '01':['09','02'],
-      '02':['01','03'],
-      '03':['02','04'],
-      '04':['03','05'],
-      '05':['04','07','08'],
-      '06':['05','07','08'],
-      '07':['05'],
-      '08':['06','09'],
-      '09':['08','01']
-    };
-
-    const preloaded = new Set();
-
-    function preloadScene(id) {
-      if (preloaded.has(id)) return;
-      const img = new Image();
-      img.decoding = 'async';
-      img.src = id + '.png';
-      preloaded.add(id);
-    }
-
-    viewer.on('scenechange', function(sceneId) {
-      loading.classList.add('show');
-      (neighbours[sceneId] || []).forEach(preloadScene);
-    });
-
-    viewer.on('load', function() {
-      loading.classList.remove('show');
-      const current = viewer.getScene();
-      (neighbours[current] || []).forEach(preloadScene);
-    });
-
-    ['09','02'].forEach(preloadScene);
-    window.addEventListener('load', () => {
-      ['01','02','03','04','05','06','07','08','09'].forEach((id, i) => {
-        setTimeout(() => preloadScene(id), 700 + i * 300);
-      });
-    });
-  </script>
+<div id="panorama"></div>
+<script>
+function makeArrow(div,args){
+ div.classList.add("street-arrow");
+ if(args.direction==="back") div.classList.add("back");
+ div.onclick=function(e){e.stopPropagation();viewer.loadScene(args.sceneId)};
+}
+const scenes={};
+for(let i=1;i<=9;i++){
+ const id=String(i).padStart(2,"0");
+ const prev=String(i===1?9:i-1).padStart(2,"0");
+ const next=String(i===9?1:i+1).padStart(2,"0");
+ scenes[id]={
+  type:"equirectangular",panorama:id+".png",autoLoad:true,hfov:105,pitch:0,yaw:0,
+  hotSpots:[
+   {pitch:-32,yaw:-18,cssClass:"street-arrow",createTooltipFunc:makeArrow,
+    createTooltipArgs:{sceneId:prev,direction:"back"}},
+   {pitch:-32,yaw:18,cssClass:"street-arrow",createTooltipFunc:makeArrow,
+    createTooltipArgs:{sceneId:next,direction:"forward"}}
+  ]
+ };
+}
+const viewer=pannellum.viewer("panorama",{
+ default:{firstScene:"01",sceneFadeDuration:300,autoLoad:true,showControls:true,mouseZoom:true},
+ scenes:scenes
+});
+</script>
 </body>
 </html>
