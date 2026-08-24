@@ -69,6 +69,8 @@ function makeArrow(el,args){
  m.appendChild(road);m.appendChild(ch);el.appendChild(m);
  el.title='Aller vers '+args.dest;
 }
+// Chaque lien ouvre la vue suivante dans LA MÊME DIRECTION DE MARCHE.
+// Exemple : une flèche vers l'est ouvre le panorama suivant orienté vers l'est.
 const scenes={
   "TZ000000": {
     "type": "equirectangular",
@@ -87,6 +89,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000001"
         },
+        "targetYaw": 180.0,
         "targetPitch": -4,
         "targetHfov": 100
       }
@@ -109,6 +112,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000000"
         },
+        "targetYaw": 0.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -122,6 +126,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000002"
         },
+        "targetYaw": 180.0,
         "targetPitch": -4,
         "targetHfov": 100
       }
@@ -144,6 +149,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000001"
         },
+        "targetYaw": 0.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -157,6 +163,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000003"
         },
+        "targetYaw": 180.0,
         "targetPitch": -4,
         "targetHfov": 100
       }
@@ -179,6 +186,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000002"
         },
+        "targetYaw": 0.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -192,6 +200,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000004"
         },
+        "targetYaw": 180.0,
         "targetPitch": -4,
         "targetHfov": 100
       }
@@ -214,6 +223,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000003"
         },
+        "targetYaw": 0.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -227,6 +237,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000006"
         },
+        "targetYaw": -175.9,
         "targetPitch": -4,
         "targetHfov": 100
       }
@@ -249,6 +260,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000006"
         },
+        "targetYaw": -90.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -262,6 +274,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000008"
         },
+        "targetYaw": 180.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -275,6 +288,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000012"
         },
+        "targetYaw": 180.0,
         "targetPitch": -4,
         "targetHfov": 100
       }
@@ -297,6 +311,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000004"
         },
+        "targetYaw": 4.1,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -310,6 +325,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000007"
         },
+        "targetYaw": -90.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -323,6 +339,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000005"
         },
+        "targetYaw": 90.0,
         "targetPitch": -4,
         "targetHfov": 100
       }
@@ -345,6 +362,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000006"
         },
+        "targetYaw": 90.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -358,6 +376,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000011"
         },
+        "targetYaw": 165.8,
         "targetPitch": -4,
         "targetHfov": 100
       }
@@ -380,6 +399,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000005"
         },
+        "targetYaw": 0.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -393,6 +413,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000012"
         },
+        "targetYaw": 180.0,
         "targetPitch": -4,
         "targetHfov": 100
       }
@@ -415,6 +436,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000013"
         },
+        "targetYaw": -140.4,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -428,6 +450,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000014"
         },
+        "targetYaw": -149.5,
         "targetPitch": -4,
         "targetHfov": 100
       }
@@ -450,6 +473,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000011"
         },
+        "targetYaw": -41.1,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -463,6 +487,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000012"
         },
+        "targetYaw": 90.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -476,6 +501,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000020"
         },
+        "targetYaw": -164.6,
         "targetPitch": -4,
         "targetHfov": 100
       }
@@ -498,6 +524,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000007"
         },
+        "targetYaw": -14.2,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -511,6 +538,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000010"
         },
+        "targetYaw": 138.9,
         "targetPitch": -4,
         "targetHfov": 100
       }
@@ -533,6 +561,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000005"
         },
+        "targetYaw": 0.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -546,6 +575,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000008"
         },
+        "targetYaw": 0.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -559,6 +589,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000010"
         },
+        "targetYaw": -90.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -572,6 +603,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000013"
         },
+        "targetYaw": 90.0,
         "targetPitch": -4,
         "targetHfov": 100
       }
@@ -594,6 +626,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000012"
         },
+        "targetYaw": -90.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -607,6 +640,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000014"
         },
+        "targetYaw": 180.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -620,6 +654,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000009"
         },
+        "targetYaw": 39.6,
         "targetPitch": -4,
         "targetHfov": 100
       }
@@ -642,6 +677,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000013"
         },
+        "targetYaw": 0.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -655,6 +691,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000015"
         },
+        "targetYaw": 180.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -668,6 +705,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000009"
         },
+        "targetYaw": 30.5,
         "targetPitch": -4,
         "targetHfov": 100
       }
@@ -690,6 +728,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000014"
         },
+        "targetYaw": 0.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -703,6 +742,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000016"
         },
+        "targetYaw": 180.0,
         "targetPitch": -4,
         "targetHfov": 100
       }
@@ -725,6 +765,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000015"
         },
+        "targetYaw": 0.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -738,6 +779,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000017"
         },
+        "targetYaw": -90.0,
         "targetPitch": -4,
         "targetHfov": 100
       }
@@ -760,6 +802,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000020"
         },
+        "targetYaw": -21.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -773,6 +816,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000019"
         },
+        "targetYaw": -90.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -786,6 +830,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000016"
         },
+        "targetYaw": 90.0,
         "targetPitch": -4,
         "targetHfov": 100
       }
@@ -808,6 +853,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000019"
         },
+        "targetYaw": 2.7,
         "targetPitch": -4,
         "targetHfov": 100
       }
@@ -830,6 +876,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000020"
         },
+        "targetYaw": 19.9,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -843,6 +890,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000017"
         },
+        "targetYaw": 90.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -856,6 +904,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000018"
         },
+        "targetYaw": -177.3,
         "targetPitch": -4,
         "targetHfov": 100
       }
@@ -878,6 +927,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000010"
         },
+        "targetYaw": 15.4,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -891,6 +941,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000017"
         },
+        "targetYaw": 159.0,
         "targetPitch": -4,
         "targetHfov": 100
       },
@@ -904,6 +955,7 @@ const scenes={
         "createTooltipArgs": {
           "dest": "TZ000019"
         },
+        "targetYaw": -160.1,
         "targetPitch": -4,
         "targetHfov": 100
       }
