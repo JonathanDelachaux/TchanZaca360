@@ -3,131 +3,86 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Tchan-Zâca 360 — 01 à 08</title>
-
+<title>Tchan-Zâca Street View — 01 à 08</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
 <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
-
 <style>
-html,body,#panorama {
-  width:100%;
-  height:100%;
-  margin:0;
-  overflow:hidden;
-  background:#111;
-}
-.pnlm-container { background:#111; }
+html,body,#panorama{width:100%;height:100%;margin:0;overflow:hidden;background:#000}
+.pnlm-container{background:#000}
+.pnlm-load-box{opacity:.72}
 
-/* Ne pas appliquer transform au hotspot externe :
-   Pannellum l'utilise pour son positionnement dans la sphère. */
-.sv-hotspot {
-  width:110px !important;
-  height:88px !important;
-  margin-left:-55px !important;
-  margin-top:-44px !important;
-  background:none !important;
-  border:none !important;
-  cursor:pointer;
+.sv-hotspot{
+ width:118px!important;height:96px!important;
+ margin-left:-59px!important;margin-top:-48px!important;
+ background:none!important;border:none!important;cursor:pointer;
 }
-
-.sv-inner {
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  transform:perspective(170px) rotateX(60deg);
-  transform-origin:50% 62%;
-  filter:drop-shadow(0 4px 4px rgba(0,0,0,.55));
+.sv-floor{
+ position:absolute;inset:0;pointer-events:none;
+ transform:perspective(175px) rotateX(62deg);
+ transform-origin:50% 62%;
+ filter:drop-shadow(0 5px 4px rgba(0,0,0,.48));
+ transition:transform .12s ease,opacity .12s ease;
 }
-
-.sv-oval {
-  position:absolute;
-  left:15px;
-  top:28px;
-  width:80px;
-  height:42px;
-  border-radius:50%;
-  background:rgba(55,145,245,.27);
-  border:3px solid rgba(255,255,255,.95);
-  box-sizing:border-box;
+.sv-hotspot:hover .sv-floor{
+ transform:perspective(175px) rotateX(62deg) scale(1.12);
+ opacity:.88;
 }
-
-.sv-chevron {
-  position:absolute;
-  left:34px;
-  top:11px;
-  width:40px;
-  height:40px;
-  border-top:11px solid white;
-  border-right:11px solid white;
-  transform:rotate(-45deg);
-  box-sizing:border-box;
+.sv-disc{
+ position:absolute;left:14px;top:30px;width:90px;height:48px;
+ border-radius:50%;
+ background:rgba(54,142,245,.25);
+ border:3px solid rgba(255,255,255,.96);
+ box-shadow:inset 0 0 0 2px rgba(70,140,230,.28);
+ box-sizing:border-box;
 }
-
-#scene {
-  position:fixed;
-  left:12px;
-  bottom:12px;
-  z-index:20;
-  color:white;
-  background:rgba(0,0,0,.38);
-  padding:5px 8px;
-  border-radius:4px;
-  font:12px Arial,sans-serif;
-  pointer-events:none;
+.sv-chevron{
+ position:absolute;left:38px;top:11px;width:40px;height:40px;
+ border-top:11px solid white;border-right:11px solid white;
+ transform:rotate(-45deg);box-sizing:border-box;
+ filter:drop-shadow(0 1px 1px rgba(0,0,0,.45));
 }
-
-#error {
-  display:none;
-  position:fixed;
-  left:20px; right:20px; top:20px;
-  z-index:99;
-  color:#fff;
-  background:#8b0000;
-  padding:14px;
-  font:14px Arial,sans-serif;
-  border-radius:6px;
+#sceneName{
+ position:fixed;left:12px;bottom:12px;z-index:20;
+ color:#fff;background:rgba(0,0,0,.28);padding:5px 8px;
+ border-radius:4px;font:12px Arial,sans-serif;pointer-events:none;
+}
+@media(max-width:700px){
+ .sv-hotspot{width:138px!important;height:108px!important;margin-left:-69px!important;margin-top:-54px!important}
+ .sv-disc{left:17px;top:33px;width:104px;height:55px}
+ .sv-chevron{left:46px;top:12px;width:45px;height:45px}
 }
 </style>
 </head>
-
 <body>
 <div id="panorama"></div>
-<div id="scene">01.png</div>
-<div id="error"></div>
-
+<div id="sceneName">01</div>
 <script>
-function makeArrow(hotSpotDiv, args) {
-  const inner = document.createElement('div');
-  inner.className = 'sv-inner';
-
-  const oval = document.createElement('div');
-  oval.className = 'sv-oval';
-
-  const chevron = document.createElement('div');
-  chevron.className = 'sv-chevron';
-
-  inner.appendChild(oval);
-  inner.appendChild(chevron);
-  hotSpotDiv.appendChild(inner);
-  hotSpotDiv.title = 'Aller vers ' + args.dest + '.png';
+function makeArrow(el,args){
+ const floor=document.createElement('div'); floor.className='sv-floor';
+ const disc=document.createElement('div'); disc.className='sv-disc';
+ const ch=document.createElement('div'); ch.className='sv-chevron';
+ floor.appendChild(disc); floor.appendChild(ch); el.appendChild(floor);
+ el.title='Aller vers '+args.dest;
 }
 
-const scenes = {
+const scenes={
   "01": {
     "type": "equirectangular",
-    "panorama": "01.png",
-    "hfov": 100,
-    "pitch": -3,
+    "panorama": "01.jpg",
+    "hfov": 82,
+    "minHfov": 35,
+    "maxHfov": 105,
+    "pitch": -5,
     "yaw": 0,
     "hotSpots": [
       {
-        "pitch": -28,
-        "yaw": -170,
+        "pitch": -31,
+        "yaw": -43.6,
         "type": "scene",
         "sceneId": "02",
-        "targetYaw": -170,
-        "targetPitch": -3,
-        "targetHfov": 100,
+        "targetYaw": -43.6,
+        "targetPitch": -5,
+        "targetHfov": 82,
         "cssClass": "sv-hotspot",
         "createTooltipFunc": makeArrow,
         "createTooltipArgs": {
@@ -135,13 +90,13 @@ const scenes = {
         }
       },
       {
-        "pitch": -28,
-        "yaw": -120,
+        "pitch": -31,
+        "yaw": 8.5,
         "type": "scene",
         "sceneId": "03",
-        "targetYaw": -120,
-        "targetPitch": -3,
-        "targetHfov": 100,
+        "targetYaw": 8.5,
+        "targetPitch": -5,
+        "targetHfov": 82,
         "cssClass": "sv-hotspot",
         "createTooltipFunc": makeArrow,
         "createTooltipArgs": {
@@ -152,19 +107,21 @@ const scenes = {
   },
   "02": {
     "type": "equirectangular",
-    "panorama": "02.png",
-    "hfov": 100,
-    "pitch": -3,
+    "panorama": "02.jpg",
+    "hfov": 82,
+    "minHfov": 35,
+    "maxHfov": 105,
+    "pitch": -5,
     "yaw": 0,
     "hotSpots": [
       {
-        "pitch": -28,
-        "yaw": 10,
+        "pitch": -31,
+        "yaw": 136.4,
         "type": "scene",
         "sceneId": "01",
-        "targetYaw": 10,
-        "targetPitch": -3,
-        "targetHfov": 100,
+        "targetYaw": 136.4,
+        "targetPitch": -5,
+        "targetHfov": 82,
         "cssClass": "sv-hotspot",
         "createTooltipFunc": makeArrow,
         "createTooltipArgs": {
@@ -172,13 +129,13 @@ const scenes = {
         }
       },
       {
-        "pitch": -28,
-        "yaw": -35,
+        "pitch": -31,
+        "yaw": 74.0,
         "type": "scene",
         "sceneId": "03",
-        "targetYaw": -35,
-        "targetPitch": -3,
-        "targetHfov": 100,
+        "targetYaw": 74.0,
+        "targetPitch": -5,
+        "targetHfov": 82,
         "cssClass": "sv-hotspot",
         "createTooltipFunc": makeArrow,
         "createTooltipArgs": {
@@ -186,13 +143,13 @@ const scenes = {
         }
       },
       {
-        "pitch": -28,
-        "yaw": 165,
+        "pitch": -31,
+        "yaw": -43.0,
         "type": "scene",
         "sceneId": "04",
-        "targetYaw": 165,
-        "targetPitch": -3,
-        "targetHfov": 100,
+        "targetYaw": -43.0,
+        "targetPitch": -5,
+        "targetHfov": 82,
         "cssClass": "sv-hotspot",
         "createTooltipFunc": makeArrow,
         "createTooltipArgs": {
@@ -200,36 +157,38 @@ const scenes = {
         }
       },
       {
-        "pitch": -28,
-        "yaw": 45,
+        "pitch": -31,
+        "yaw": 7.5,
         "type": "scene",
-        "sceneId": "06",
-        "targetYaw": 45,
-        "targetPitch": -3,
-        "targetHfov": 100,
+        "sceneId": "08",
+        "targetYaw": 7.5,
+        "targetPitch": -5,
+        "targetHfov": 82,
         "cssClass": "sv-hotspot",
         "createTooltipFunc": makeArrow,
         "createTooltipArgs": {
-          "dest": "06"
+          "dest": "08"
         }
       }
     ]
   },
   "03": {
     "type": "equirectangular",
-    "panorama": "03.png",
-    "hfov": 100,
-    "pitch": -3,
+    "panorama": "03.jpg",
+    "hfov": 82,
+    "minHfov": 35,
+    "maxHfov": 105,
+    "pitch": -5,
     "yaw": 0,
     "hotSpots": [
       {
-        "pitch": -28,
-        "yaw": 55,
+        "pitch": -31,
+        "yaw": -171.5,
         "type": "scene",
         "sceneId": "01",
-        "targetYaw": 55,
-        "targetPitch": -3,
-        "targetHfov": 100,
+        "targetYaw": -171.5,
+        "targetPitch": -5,
+        "targetHfov": 82,
         "cssClass": "sv-hotspot",
         "createTooltipFunc": makeArrow,
         "createTooltipArgs": {
@@ -237,13 +196,38 @@ const scenes = {
         }
       },
       {
-        "pitch": -28,
-        "yaw": 140,
+        "pitch": -31,
+        "yaw": -106.0,
         "type": "scene",
         "sceneId": "02",
-        "targetYaw": 140,
-        "targetPitch": -3,
-        "targetHfov": 100,
+        "targetYaw": -106.0,
+        "targetPitch": -5,
+        "targetHfov": 82,
+        "cssClass": "sv-hotspot",
+        "createTooltipFunc": makeArrow,
+        "createTooltipArgs": {
+          "dest": "02"
+        }
+      }
+    ]
+  },
+  "08": {
+    "type": "equirectangular",
+    "panorama": "08.jpg",
+    "hfov": 82,
+    "minHfov": 35,
+    "maxHfov": 105,
+    "pitch": -5,
+    "yaw": 0,
+    "hotSpots": [
+      {
+        "pitch": -31,
+        "yaw": -172.5,
+        "type": "scene",
+        "sceneId": "02",
+        "targetYaw": -172.5,
+        "targetPitch": -5,
+        "targetHfov": 82,
         "cssClass": "sv-hotspot",
         "createTooltipFunc": makeArrow,
         "createTooltipArgs": {
@@ -251,13 +235,13 @@ const scenes = {
         }
       },
       {
-        "pitch": -28,
-        "yaw": 170,
+        "pitch": -31,
+        "yaw": -106.8,
         "type": "scene",
         "sceneId": "04",
-        "targetYaw": 170,
-        "targetPitch": -3,
-        "targetHfov": 100,
+        "targetYaw": -106.8,
+        "targetPitch": -5,
+        "targetHfov": 82,
         "cssClass": "sv-hotspot",
         "createTooltipFunc": makeArrow,
         "createTooltipArgs": {
@@ -268,19 +252,21 @@ const scenes = {
   },
   "04": {
     "type": "equirectangular",
-    "panorama": "04.png",
-    "hfov": 100,
-    "pitch": -3,
+    "panorama": "04.jpg",
+    "hfov": 82,
+    "minHfov": 35,
+    "maxHfov": 105,
+    "pitch": -5,
     "yaw": 0,
     "hotSpots": [
       {
-        "pitch": -28,
-        "yaw": -5,
+        "pitch": -31,
+        "yaw": 137.0,
         "type": "scene",
         "sceneId": "02",
-        "targetYaw": -5,
-        "targetPitch": -3,
-        "targetHfov": 100,
+        "targetYaw": 137.0,
+        "targetPitch": -5,
+        "targetHfov": 82,
         "cssClass": "sv-hotspot",
         "createTooltipFunc": makeArrow,
         "createTooltipArgs": {
@@ -288,27 +274,27 @@ const scenes = {
         }
       },
       {
-        "pitch": -28,
-        "yaw": 35,
+        "pitch": -31,
+        "yaw": 73.2,
         "type": "scene",
-        "sceneId": "03",
-        "targetYaw": 35,
-        "targetPitch": -3,
-        "targetHfov": 100,
+        "sceneId": "08",
+        "targetYaw": 73.2,
+        "targetPitch": -5,
+        "targetHfov": 82,
         "cssClass": "sv-hotspot",
         "createTooltipFunc": makeArrow,
         "createTooltipArgs": {
-          "dest": "03"
+          "dest": "08"
         }
       },
       {
-        "pitch": -28,
-        "yaw": 90,
+        "pitch": -31,
+        "yaw": 44.4,
         "type": "scene",
         "sceneId": "05",
-        "targetYaw": 90,
-        "targetPitch": -3,
-        "targetHfov": 100,
+        "targetYaw": 44.4,
+        "targetPitch": -5,
+        "targetHfov": 82,
         "cssClass": "sv-hotspot",
         "createTooltipFunc": makeArrow,
         "createTooltipArgs": {
@@ -319,19 +305,21 @@ const scenes = {
   },
   "05": {
     "type": "equirectangular",
-    "panorama": "05.png",
-    "hfov": 100,
-    "pitch": -3,
+    "panorama": "05.jpg",
+    "hfov": 82,
+    "minHfov": 35,
+    "maxHfov": 105,
+    "pitch": -5,
     "yaw": 0,
     "hotSpots": [
       {
-        "pitch": -28,
-        "yaw": -90,
+        "pitch": -31,
+        "yaw": -135.6,
         "type": "scene",
         "sceneId": "04",
-        "targetYaw": -90,
-        "targetPitch": -3,
-        "targetHfov": 100,
+        "targetYaw": -135.6,
+        "targetPitch": -5,
+        "targetHfov": 82,
         "cssClass": "sv-hotspot",
         "createTooltipFunc": makeArrow,
         "createTooltipArgs": {
@@ -339,59 +327,38 @@ const scenes = {
         }
       },
       {
-        "pitch": -28,
-        "yaw": 90,
+        "pitch": -31,
+        "yaw": 44.2,
         "type": "scene",
-        "sceneId": "07",
-        "targetYaw": 90,
-        "targetPitch": -3,
-        "targetHfov": 100,
+        "sceneId": "06",
+        "targetYaw": 44.2,
+        "targetPitch": -5,
+        "targetHfov": 82,
         "cssClass": "sv-hotspot",
         "createTooltipFunc": makeArrow,
         "createTooltipArgs": {
-          "dest": "07"
+          "dest": "06"
         }
       }
     ]
   },
   "06": {
     "type": "equirectangular",
-    "panorama": "06.png",
-    "hfov": 100,
-    "pitch": -3,
+    "panorama": "06.jpg",
+    "hfov": 82,
+    "minHfov": 35,
+    "maxHfov": 105,
+    "pitch": -5,
     "yaw": 0,
     "hotSpots": [
       {
-        "pitch": -28,
-        "yaw": -135,
-        "type": "scene",
-        "sceneId": "02",
-        "targetYaw": -135,
-        "targetPitch": -3,
-        "targetHfov": 100,
-        "cssClass": "sv-hotspot",
-        "createTooltipFunc": makeArrow,
-        "createTooltipArgs": {
-          "dest": "02"
-        }
-      }
-    ]
-  },
-  "07": {
-    "type": "equirectangular",
-    "panorama": "07.png",
-    "hfov": 100,
-    "pitch": -3,
-    "yaw": 0,
-    "hotSpots": [
-      {
-        "pitch": -28,
-        "yaw": -90,
+        "pitch": -31,
+        "yaw": -135.8,
         "type": "scene",
         "sceneId": "05",
-        "targetYaw": -90,
-        "targetPitch": -3,
-        "targetHfov": 100,
+        "targetYaw": -135.8,
+        "targetPitch": -5,
+        "targetHfov": 82,
         "cssClass": "sv-hotspot",
         "createTooltipFunc": makeArrow,
         "createTooltipArgs": {
@@ -399,36 +366,13 @@ const scenes = {
         }
       },
       {
-        "pitch": -28,
-        "yaw": 170,
-        "type": "scene",
-        "sceneId": "08",
-        "targetYaw": 170,
-        "targetPitch": -3,
-        "targetHfov": 100,
-        "cssClass": "sv-hotspot",
-        "createTooltipFunc": makeArrow,
-        "createTooltipArgs": {
-          "dest": "08"
-        }
-      }
-    ]
-  },
-  "08": {
-    "type": "equirectangular",
-    "panorama": "08.png",
-    "hfov": 100,
-    "pitch": -3,
-    "yaw": 0,
-    "hotSpots": [
-      {
-        "pitch": -28,
-        "yaw": -10,
+        "pitch": -31,
+        "yaw": -25.3,
         "type": "scene",
         "sceneId": "07",
-        "targetYaw": -10,
-        "targetPitch": -3,
-        "targetHfov": 100,
+        "targetYaw": -25.3,
+        "targetPitch": -5,
+        "targetHfov": 82,
         "cssClass": "sv-hotspot",
         "createTooltipFunc": makeArrow,
         "createTooltipArgs": {
@@ -436,38 +380,65 @@ const scenes = {
         }
       }
     ]
+  },
+  "07": {
+    "type": "equirectangular",
+    "panorama": "07.jpg",
+    "hfov": 82,
+    "minHfov": 35,
+    "maxHfov": 105,
+    "pitch": -5,
+    "yaw": 0,
+    "hotSpots": [
+      {
+        "pitch": -31,
+        "yaw": 154.7,
+        "type": "scene",
+        "sceneId": "06",
+        "targetYaw": 154.7,
+        "targetPitch": -5,
+        "targetHfov": 82,
+        "cssClass": "sv-hotspot",
+        "createTooltipFunc": makeArrow,
+        "createTooltipArgs": {
+          "dest": "06"
+        }
+      }
+    ]
   }
 };
+const viewer=pannellum.viewer('panorama',{
+ default:{
+   firstScene:'01',
+   autoLoad:true,
+   sceneFadeDuration:180,
+   showControls:true,
+   mouseZoom:true,
+   keyboardZoom:true,
+   compass:false
+ },
+ scenes
+});
 
-try {
-  const viewer = pannellum.viewer('panorama', {
-    default: {
-      firstScene: '01',
-      autoLoad: true,
-      sceneFadeDuration: 250,
-      showControls: true,
-      mouseZoom: true,
-      keyboardZoom: true,
-      compass: false
-    },
-    scenes: scenes
-  });
-
-  viewer.on('scenechange', function(id) {
-    document.getElementById('scene').textContent = id + '.png';
-  });
-
-  viewer.on('error', function(message) {
-    const e = document.getElementById('error');
-    e.style.display = 'block';
-    e.textContent = 'Erreur panorama : ' + message +
-      ' — vérifie que 01.png à 08.png sont dans le même dossier que index.html.';
-  });
-} catch(err) {
-  const e = document.getElementById('error');
-  e.style.display = 'block';
-  e.textContent = 'Erreur de chargement : ' + err.message;
+// Preload ONLY connected panoramas, then quietly preload the rest.
+// This keeps the first display fast while making subsequent movement near-instant.
+const cached={};
+function preload(url){
+ if(cached[url]) return;
+ const im=new Image(); im.src=url; cached[url]=im;
 }
+function preloadNeighbours(id){
+ (scenes[id].hotSpots||[]).forEach(h=>preload(scenes[h.sceneId].panorama));
+}
+viewer.on('load',()=>preloadNeighbours(viewer.getScene()));
+viewer.on('scenechange',id=>{
+ document.getElementById('sceneName').textContent=id;
+ preloadNeighbours(id);
+});
+
+setTimeout(()=>{
+ Object.values(scenes).forEach(s=>preload(s.panorama));
+},2500);
 </script>
 </body>
 </html>

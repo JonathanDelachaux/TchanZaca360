@@ -1,0 +1,2 @@
+Déposer index.html et 01.jpg à 08.jpg ensemble dans le même dossier GitHub Pages.
+Les PNG d'origine n'ont pas besoin d'être utilisés par cet index.
