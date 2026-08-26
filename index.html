@@ -14,30 +14,43 @@ html, body, #panorama {
 }
 .pnlm-container { background:#000; }
 
-/* Flèche blanche, sobre, posée au sol */
+/* Flèche blanche mobile dans sa zone */
 .tz-arrow {
-  width:76px !important;
-  height:64px !important;
-  margin-left:-38px !important;
-  margin-top:-32px !important;
+  width:180px !important;
+  height:86px !important;
+  margin-left:-90px !important;
+  margin-top:-43px !important;
   background:none !important;
   border:none !important;
   cursor:pointer;
 }
+
+/* La zone entière reste cliquable, mais seule la flèche est visible. */
 .tz-arrow-inner {
   position:absolute;
-  inset:0;
+  left:0;
+  top:4px;
+  width:76px;
+  height:64px;
   pointer-events:none;
   opacity:.92;
   filter:drop-shadow(0 2px 3px rgba(0,0,0,.65));
   transform:perspective(150px) rotateX(59deg);
   transform-origin:50% 65%;
-  transition:opacity .12s ease, transform .12s ease;
+  animation:tzGlide 3.8s ease-in-out infinite alternate;
 }
+
+@keyframes tzGlide {
+  0%   { left:2px;   transform:perspective(150px) rotateX(59deg) scale(.96); }
+  50%  {            transform:perspective(150px) rotateX(59deg) scale(1.02); }
+  100% { left:102px; transform:perspective(150px) rotateX(59deg) scale(.96); }
+}
+
 .tz-arrow:hover .tz-arrow-inner {
   opacity:1;
-  transform:perspective(150px) rotateX(59deg) scale(1.12);
+  animation-duration:2.2s;
 }
+
 .tz-arrow-shape {
   position:absolute;
   left:19px;
@@ -67,6 +80,24 @@ html, body, #panorama {
   border:2px solid rgba(255,255,255,.58);
   border-radius:50%;
   box-sizing:border-box;
+}
+
+/* Sur tactile, mouvement plus lent et zone plus large. */
+@media (pointer:coarse) and (max-width:900px) {
+  .tz-arrow {
+    width:210px !important;
+    height:98px !important;
+    margin-left:-105px !important;
+    margin-top:-49px !important;
+  }
+  .tz-arrow-inner {
+    animation-duration:4.8s;
+  }
+  @keyframes tzGlide {
+    0%   { left:4px;   transform:perspective(170px) rotateX(59deg) scale(1.02); }
+    50%  {             transform:perspective(170px) rotateX(59deg) scale(1.08); }
+    100% { left:128px; transform:perspective(170px) rotateX(59deg) scale(1.02); }
+  }
 }
 
 /* Gyroscope: smartphone seulement */
@@ -103,15 +134,7 @@ html, body, #panorama {
   pointer-events:none;
 }
 
-@media (pointer:coarse) and (max-width:900px) {
-  #gyroBtn { display:block; }
-  .tz-arrow {
-    width:94px !important; height:76px !important;
-    margin-left:-47px !important; margin-top:-38px !important;
-  }
-  .tz-arrow-inner { transform:perspective(170px) rotateX(59deg) scale(1.12); }
-  .tz-arrow:hover .tz-arrow-inner { transform:perspective(170px) rotateX(59deg) scale(1.18); }
-}
+@media (pointer:coarse) and (max-width:900px) { #gyroBtn { display:block; } }
 </style>
 </head>
 
