@@ -1,2 +1,7 @@
-Déposer index.html et 01.jpg à 08.jpg ensemble dans le même dossier GitHub Pages.
-Les PNG d'origine n'ont pas besoin d'être utilisés par cet index.
+TCHAN-ZÂCA STREET VIEW — 01 À 08
+
+1. Déposer index.html et 01.jpg à 08.jpg dans le même dossier GitHub Pages.
+2. Les flèches sont positionnées d'après les zones colorées fournies.
+3. Le bouton « Activer le gyroscope » apparaît uniquement sur smartphone / écran tactile.
+4. Une fois activé, le gyroscope reste actif lorsque l'on passe d'une image à l'autre.
+5. Sur iPhone / iPad, le site doit être servi en HTTPS (GitHub Pages convient) pour l'autorisation du gyroscope.
