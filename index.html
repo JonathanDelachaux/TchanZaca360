@@ -16,9 +16,9 @@ html, body, #panorama {
 
 /* Flèche blanche mobile dans sa zone */
 .tz-arrow {
-  width:180px !important;
+  width:140px !important;
   height:86px !important;
-  margin-left:-90px !important;
+  margin-left:-70px !important;
   margin-top:-43px !important;
   background:none !important;
   border:none !important;
@@ -43,7 +43,7 @@ html, body, #panorama {
 @keyframes tzGlide {
   0%   { left:2px;   transform:perspective(150px) rotateX(59deg) scale(.96); }
   50%  {            transform:perspective(150px) rotateX(59deg) scale(1.02); }
-  100% { left:102px; transform:perspective(150px) rotateX(59deg) scale(.96); }
+  100% { left:62px; transform:perspective(150px) rotateX(59deg) scale(.96); }
 }
 
 .tz-arrow:hover .tz-arrow-inner {
@@ -85,9 +85,9 @@ html, body, #panorama {
 /* Sur tactile, mouvement plus lent et zone plus large. */
 @media (pointer:coarse) and (max-width:900px) {
   .tz-arrow {
-    width:210px !important;
+    width:165px !important;
     height:98px !important;
-    margin-left:-105px !important;
+    margin-left:-82px !important;
     margin-top:-49px !important;
   }
   .tz-arrow-inner {
@@ -96,7 +96,7 @@ html, body, #panorama {
   @keyframes tzGlide {
     0%   { left:4px;   transform:perspective(170px) rotateX(59deg) scale(1.02); }
     50%  {             transform:perspective(170px) rotateX(59deg) scale(1.08); }
-    100% { left:128px; transform:perspective(170px) rotateX(59deg) scale(1.02); }
+    100% { left:83px; transform:perspective(170px) rotateX(59deg) scale(1.02); }
   }
 }
 
@@ -175,7 +175,7 @@ const scenes = {
     "yaw": 0,
     "hotSpots": [
       {
-        "pitch": -27,
+        "pitch": -5,
         "yaw": -160.0,
         "type": "scene",
         "sceneId": "02",
@@ -189,7 +189,7 @@ const scenes = {
         }
       },
       {
-        "pitch": -27,
+        "pitch": -3,
         "yaw": 115.7,
         "type": "scene",
         "sceneId": "03",
@@ -203,7 +203,7 @@ const scenes = {
         }
       },
       {
-        "pitch": -27,
+        "pitch": -3,
         "yaw": 157.1,
         "type": "scene",
         "sceneId": "05",
@@ -228,7 +228,7 @@ const scenes = {
     "yaw": 0,
     "hotSpots": [
       {
-        "pitch": -27,
+        "pitch": -3,
         "yaw": 13.2,
         "type": "scene",
         "sceneId": "01",
@@ -242,7 +242,7 @@ const scenes = {
         }
       },
       {
-        "pitch": -27,
+        "pitch": -4,
         "yaw": 46.5,
         "type": "scene",
         "sceneId": "03",
@@ -256,7 +256,7 @@ const scenes = {
         }
       },
       {
-        "pitch": -27,
+        "pitch": -3,
         "yaw": -166.2,
         "type": "scene",
         "sceneId": "04",
@@ -270,7 +270,7 @@ const scenes = {
         }
       },
       {
-        "pitch": -27,
+        "pitch": -3,
         "yaw": 147.7,
         "type": "scene",
         "sceneId": "05",
@@ -295,7 +295,7 @@ const scenes = {
     "yaw": 0,
     "hotSpots": [
       {
-        "pitch": -27,
+        "pitch": -4,
         "yaw": -61.9,
         "type": "scene",
         "sceneId": "01",
@@ -309,7 +309,7 @@ const scenes = {
         }
       },
       {
-        "pitch": -27,
+        "pitch": -9,
         "yaw": -100.4,
         "type": "scene",
         "sceneId": "02",
@@ -323,7 +323,7 @@ const scenes = {
         }
       },
       {
-        "pitch": -27,
+        "pitch": -7,
         "yaw": 94.4,
         "type": "scene",
         "sceneId": "07",
@@ -348,7 +348,7 @@ const scenes = {
     "yaw": 0,
     "hotSpots": [
       {
-        "pitch": -27,
+        "pitch": -5,
         "yaw": -1.1,
         "type": "scene",
         "sceneId": "01",
@@ -362,7 +362,7 @@ const scenes = {
         }
       },
       {
-        "pitch": -27,
+        "pitch": -7,
         "yaw": -21.0,
         "type": "scene",
         "sceneId": "02",
@@ -376,7 +376,7 @@ const scenes = {
         }
       },
       {
-        "pitch": -27,
+        "pitch": -17,
         "yaw": 24.2,
         "type": "scene",
         "sceneId": "05",
@@ -390,7 +390,7 @@ const scenes = {
         }
       },
       {
-        "pitch": -27,
+        "pitch": -7,
         "yaw": 58.5,
         "type": "scene",
         "sceneId": "08",
@@ -415,7 +415,7 @@ const scenes = {
     "yaw": 0,
     "hotSpots": [
       {
-        "pitch": -27,
+        "pitch": -4,
         "yaw": -35.2,
         "type": "scene",
         "sceneId": "02",
@@ -429,7 +429,7 @@ const scenes = {
         }
       },
       {
-        "pitch": -27,
+        "pitch": -3,
         "yaw": -87.9,
         "type": "scene",
         "sceneId": "04",
@@ -443,7 +443,7 @@ const scenes = {
         }
       },
       {
-        "pitch": -27,
+        "pitch": -4,
         "yaw": 77.4,
         "type": "scene",
         "sceneId": "06",
@@ -457,7 +457,7 @@ const scenes = {
         }
       },
       {
-        "pitch": -27,
+        "pitch": -11,
         "yaw": 42.4,
         "type": "scene",
         "sceneId": "08",
@@ -482,7 +482,7 @@ const scenes = {
     "yaw": 0,
     "hotSpots": [
       {
-        "pitch": -27,
+        "pitch": -7,
         "yaw": 7.2,
         "type": "scene",
         "sceneId": "03",
@@ -496,7 +496,7 @@ const scenes = {
         }
       },
       {
-        "pitch": -27,
+        "pitch": -5,
         "yaw": -83.7,
         "type": "scene",
         "sceneId": "04",
@@ -510,7 +510,7 @@ const scenes = {
         }
       },
       {
-        "pitch": -27,
+        "pitch": -6,
         "yaw": -79.5,
         "type": "scene",
         "sceneId": "05",
@@ -524,7 +524,7 @@ const scenes = {
         }
       },
       {
-        "pitch": -27,
+        "pitch": -5,
         "yaw": -180.0,
         "type": "scene",
         "sceneId": "07",
@@ -549,7 +549,7 @@ const scenes = {
     "yaw": 0,
     "hotSpots": [
       {
-        "pitch": -27,
+        "pitch": -3,
         "yaw": 9.0,
         "type": "scene",
         "sceneId": "03",
@@ -563,7 +563,7 @@ const scenes = {
         }
       },
       {
-        "pitch": -27,
+        "pitch": -4,
         "yaw": -62.6,
         "type": "scene",
         "sceneId": "06",
@@ -588,7 +588,7 @@ const scenes = {
     "yaw": 0,
     "hotSpots": [
       {
-        "pitch": -27,
+        "pitch": -4,
         "yaw": -58.1,
         "type": "scene",
         "sceneId": "02",
@@ -602,7 +602,7 @@ const scenes = {
         }
       },
       {
-        "pitch": -27,
+        "pitch": -4,
         "yaw": -106.7,
         "type": "scene",
         "sceneId": "04",
@@ -616,7 +616,7 @@ const scenes = {
         }
       },
       {
-        "pitch": -27,
+        "pitch": -10,
         "yaw": -115.0,
         "type": "scene",
         "sceneId": "05",
