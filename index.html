@@ -23,15 +23,18 @@ html, body, #panorama {
   background:none !important;
   border:none !important;
   cursor:pointer;
+  overflow:hidden !important;
+  border-radius:44% 44% 50% 50%;
 }
 
 /* La zone entière reste cliquable, mais seule la flèche est visible. */
 .tz-arrow-inner {
+  contain:paint;
   position:absolute;
-  left:0;
-  top:4px;
-  width:76px;
-  height:64px;
+  left:12px;
+  top:10px;
+  width:62px;
+  height:52px;
   pointer-events:none;
   opacity:.92;
   filter:drop-shadow(0 2px 3px rgba(0,0,0,.65));
@@ -43,7 +46,7 @@ html, body, #panorama {
 @keyframes tzGlide {
   0%   { left:2px;   transform:perspective(150px) rotateX(59deg) scale(.96); }
   50%  {            transform:perspective(150px) rotateX(59deg) scale(1.02); }
-  100% { left:62px; transform:perspective(150px) rotateX(59deg) scale(.96); }
+  100% { left:54px; transform:perspective(150px) rotateX(59deg) scale(.96); }
 }
 
 .tz-arrow:hover .tz-arrow-inner {
@@ -53,10 +56,10 @@ html, body, #panorama {
 
 .tz-arrow-shape {
   position:absolute;
-  left:19px;
-  top:7px;
-  width:38px;
-  height:38px;
+  left:15px;
+  top:6px;
+  width:30px;
+  height:30px;
   border-top:9px solid white;
   border-right:9px solid white;
   transform:rotate(-45deg);
@@ -64,19 +67,19 @@ html, body, #panorama {
 }
 .tz-arrow-tail {
   position:absolute;
-  left:33px;
-  top:29px;
-  width:10px;
-  height:27px;
+  left:27px;
+  top:23px;
+  width:8px;
+  height:22px;
   background:white;
   border-radius:3px;
 }
 .tz-arrow-shadow {
   position:absolute;
-  left:12px;
-  top:35px;
-  width:52px;
-  height:18px;
+  left:10px;
+  top:29px;
+  width:42px;
+  height:15px;
   border:2px solid rgba(255,255,255,.58);
   border-radius:50%;
   box-sizing:border-box;
@@ -96,7 +99,7 @@ html, body, #panorama {
   @keyframes tzGlide {
     0%   { left:4px;   transform:perspective(170px) rotateX(59deg) scale(1.02); }
     50%  {             transform:perspective(170px) rotateX(59deg) scale(1.08); }
-    100% { left:83px; transform:perspective(170px) rotateX(59deg) scale(1.02); }
+    100% { left:72px; transform:perspective(170px) rotateX(59deg) scale(1.02); }
   }
 }
 
